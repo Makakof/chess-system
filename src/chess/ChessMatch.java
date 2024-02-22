@@ -19,7 +19,6 @@ public class ChessMatch
     private boolean check;
     private boolean checkMate;
     private ChessPiece enPassantVulnerable;
-
     private ChessPiece promoted;
 
     public ChessMatch()
@@ -27,6 +26,7 @@ public class ChessMatch
         board = new Board(8,8);
         turn = 1;
         currentPlayer = WHITE;
+        promoted = null;
         initialSetup();
     }
 
@@ -101,8 +101,8 @@ public class ChessMatch
         promoted = null;
         if(movedPiece instanceof Pawn)
         {
-            if(movedPiece.getColor() == Color.WHITE && targetPosition.getRow() == 0
-                    || movedPiece.getColor() == Color.BLACK && targetPosition.getRow() == 7)
+            if(movedPiece.getColor() == Color.WHITE && target.getRow() == 0
+                    || movedPiece.getColor() == Color.BLACK && target.getRow() == 7)
             {
                 promoted = (ChessPiece) board.piece(target);
                 promoted = replacePromotedPiece("Q");
@@ -150,11 +150,13 @@ public class ChessMatch
         Piece p = board.removePiece(pos);
         piecesOntheBoard.remove(p);
 
-        ChessPiece newPiece =  newPiece(type, promoted.getColor());
-        board.placePiece(newPiece,pos);
+        ChessPiece newPiece = newPiece(type, promoted.getColor());
+        board.placePiece(newPiece, pos);
         piecesOntheBoard.add(newPiece);
 
         return newPiece;
+
+
     }
 
     private ChessPiece newPiece(String type, Color color)
